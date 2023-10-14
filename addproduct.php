@@ -7,6 +7,7 @@ session_start();
 
 // Kiểm tra xem người dùng có vai trò 'admin' trong phiên của họ hay không
 if ($_SESSION['roles'] == "admin" || $_SESSION['roles'] == "owner") {
+    // Hiển thị thông báo cho bảng điều khiển admin
     echo '<a href="home.php">Home</a>';
     echo '</br>';
     echo '<a href="addproduct.php">Them san pham</a>';

@@ -1,5 +1,9 @@
 <?php
-   include "connect.php";
+    include "token.php";
+
+    if(isset($_SESSION['username']) && $_SESSION['username']){
+        header("location:home.php");
+    }
 
     if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['re-password']) && isset($_POST['name'])) {
 

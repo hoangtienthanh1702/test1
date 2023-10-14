@@ -1,6 +1,10 @@
 <?php
-include "connect.php";
-session_start();
+
+include "token.php";
+
+if(isset($_SESSION['username']) && $_SESSION['username']){
+    header("location:home.php");
+}
 
 if (isset($_POST['username']) && isset($_POST['password'])  ) {
     $username = $_POST['username'];
@@ -21,7 +25,22 @@ if (isset($_POST['username']) && isset($_POST['password'])  ) {
 
             if(isset($_POST['remember'])){
                 setcookie('username', $username, time() + 3600);
+                setcookie('password', $password, time() + 3600);
+            }else{
+                setcookie('username', '', time() - 3600);
+                setcookie('password', '', time() - 3600);
             }
+
+            $username = $row['username'];
+            $random_bytes = random_bytes(32);
+            $token = bin2hex($random_bytes);  
+
+            $sqlToken = "Update users set token = '$token' where username = '$username'";
+            echo $sqlToken;
+            mysqli_query($conn, $sqlToken);
+
+            setcookie('token', $token, time() + 3600);
+
             
             header("Location: home.php");
             exit;

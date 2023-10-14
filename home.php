@@ -1,6 +1,5 @@
 <?php
-    include "connect.php";
-    session_start();
+    include "token.php";
 
     if (isset($_SESSION['username']) && $_SESSION['username']){
         echo 'Bạn đã đăng nhập với tên là '.$_SESSION['username']."<br/>";

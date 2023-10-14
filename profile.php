@@ -2,7 +2,7 @@
     include "connect.php";
     session_start();
 
-    if (isset($_SESSION['username'])){
+    if (isset($_SESSION['username']) && $_SESSION['username']){
         echo 'Bạn đã đăng nhập với tên là '.$_SESSION['username']."<br/>";
         if($_SESSION['roles'] == "admin"){
             echo 'Vào trang quản lý của Admin <a href="admin.php">Ở đây!!</a> </br> ';
@@ -19,48 +19,40 @@
     };
 
 
-    if(isset($_POST['name']) && isset($_POST['username']) && isset($_POST['old-password']) && isset($_POST['new-password'])){
-        $name = $_POST['name'];
-        $username = $_POST['username'];
+    if( isset($_POST['old-password']) && isset($_POST['new-password'])){
         $oldPassword = $_POST['old-password'];
         $newPassword = $_POST['new-password'];
-        
-        if(empty($oldPassword)||empty($newPassword)){
-            echo "Nhap day du thong tin";
-        } else {
-            if($oldPassword != $newPassword){
-               if (strlen($username) < 5 || strlen($newPassword) < 5) {
-                   echo "Tên đăng nhập và mật khẩu phải có ít nhất 5 ký tự.";
-               } else if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{5,}$/", $newPassword)) {
-                   echo "Mật khẩu phải có ít nhất 5 ký tự, 1 chữ hoa, 1 chữ thường và 1 số.";
-               }else {
-                   $id = $_SESSION['id'];
-                   $oldPassword = md5($oldPassword);
-                   $newPassword = md5($newPassword);
-       
-                   $sql = "SELECT * FROM users WHERE id = $id";
-                   $result = mysqli_query($conn, $sql);
-                   $row = mysqli_fetch_assoc($result);
-       
-                   if($row['password'] == $oldPassword){
-                       $updateSql = "UPDATE users SET name = '$name', username = '$username', password = '$newPassword'
-                         WHERE id = $id";
-                           $updateResult = mysqli_query($conn, $updateSql);
-                           if($updateResult){
-                               echo "Update successfully";
-                           }else{
-                               echo "Update failed";
-                           }
-                   }else{
-                       echo "Password không đúng";
-                   }
-               }
-           }else{
-               echo "Mật khẩu mới phải khác mật khẩu cũ";
-           }
+
+
+        if($oldPassword != $newPassword){
+            if (strlen($username) < 5 || strlen($newPassword) < 5) {
+                echo "Tên đăng nhập và mật khẩu phải có ít nhất 5 ký tự.";
+            } else if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{5,}$/", $newPassword)) {
+                echo "Mật khẩu phải có ít nhất 5 ký tự, 1 chữ hoa, 1 chữ thường và 1 số.";
+            }else {
+                $id = $_SESSION['id'];
+                $oldPassword = md5($oldPassword);
+                $newPassword = md5($newPassword);
+    
+                $sql = "SELECT * FROM users WHERE id = $id";
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_fetch_assoc($result);
+    
+                if($row['password'] == $oldPassword){
+                        $updateSql = "UPDATE users SET name = '$name', username = '$username', password = '$newPassword'   WHERE id = $id";
+                        $updateResult = mysqli_query($conn, $updateSql);
+                        if($updateResult){
+                            echo "Update successfully";
+                        }else{
+                            echo "Update failed";
+                        }
+                }else{
+                    echo "Password không đúng";
+                }
+            }
+        }else{
+            echo "Mật khẩu mới phải khác mật khẩu cũ";
         }
-   
-        
     }
 
 
@@ -91,7 +83,7 @@
                 <td>Name</td>
                 <td><?php echo $row["name"]; ?></td>
             </tr>
-            <tr>
+            <tr></tr>
                 <td>Username</td>
                 <td><?php echo $row["username"]; ?></td>
             </tr>
@@ -125,18 +117,7 @@
                 $row = mysqli_fetch_assoc($result);
             ?>
             <table>
-                <tr>
-                    <td>Name</td>
-                    <td>
-                        <input type="text" name="name" value="<?php echo $row["name"]; ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Username</td>
-                    <td>
-                        <input type="text" name="username" value="<?php echo $row["username"]; ?>">
-                    </td>
-                </tr>
+
                 <tr>
                     <td>old-password</td>
                     <td>

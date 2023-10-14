@@ -1,3 +1,10 @@
+<?php 
+    include "token.php";
+    if(isset($_SESSION['username']) && $_SESSION['username']){
+        header("location:home.php");
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

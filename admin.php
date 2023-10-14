@@ -2,12 +2,12 @@
     include "connect.php";
     session_start();
     if($_SESSION['roles'] == "admin"){
-        echo 'WELCOME';
-        echo '</br>';
+        echo 'Trang quản lý danh sách users ';
     }else{
         die('Bạn không có quyền truy cập vào trang này <a href="home.php">Trang chủ</a>');
     }
     $role = $_SESSION['roles'];
+    echo 'Trang quản lý danh sách mua hàng </br> ';
     echo 'Ban la '.$role.'</br>';
     echo '<a href="home.php">Home</a>';
     echo '</br>';
