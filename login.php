@@ -23,14 +23,6 @@ if (isset($_POST['username']) && isset($_POST['password'])  ) {
             $_SESSION['roles'] = $row['roles'];
             $_SESSION['money'] = $row['money'];
 
-            if(isset($_POST['remember'])){
-                setcookie('username', $username, time() + 3600);
-                setcookie('password', $password, time() + 3600);
-            }else{
-                setcookie('username', '', time() - 3600);
-                setcookie('password', '', time() - 3600);
-            }
-
             $username = $row['username'];
             $random_bytes = random_bytes(32);
             $token = bin2hex($random_bytes);  
@@ -39,8 +31,14 @@ if (isset($_POST['username']) && isset($_POST['password'])  ) {
             echo $sqlToken;
             mysqli_query($conn, $sqlToken);
 
-            setcookie('token', $token, time() + 3600);
-
+            if(isset($_POST['remember'])){
+                setcookie('username', $username, time() + 3600);
+                setcookie('password', $password, time() + 3600);
+                setcookie('token', $token, time() + 3600);
+            }else{
+                setcookie('username', '', time() - 3600);
+                setcookie('password', '', time() - 3600);
+            }
             
             header("Location: home.php");
             exit;
